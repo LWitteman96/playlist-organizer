@@ -1,7 +1,3 @@
-// module.exports = {
-//   lintOnSave: process.env.NODE_ENV !== 'production'
-// }
-
 module.exports = {
   devServer: {
     proxy: {
@@ -10,7 +6,6 @@ module.exports = {
 		changeOrigin: true,
 		secure:false,
 		pathRewrite: {'^/api': '/'},
-		// logLevel: 'debug' 
 		},
 	}
 	}
