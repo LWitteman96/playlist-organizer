@@ -1,7 +1,7 @@
 <template>
 	<div class="home">
 		<img alt="Vue logo" src="../assets/logo.png" />
-		<router-link to="/login">login</router-link>
+		<router-link v-if="!authenticated" to="/login">login</router-link>
 		<AfterLogin v-if="authenticated" />
 	</div>
 </template>
@@ -9,7 +9,7 @@
 <script>
 // @ is an alias to /src
 // import WelcomeScreen from "@/components/WelcomeScreen.vue"
-import AfterLogin from "@/components/AfterLogin.vue"
+import AfterLogin from "./AfterLogin.vue"
 import { mapState } from "vuex"
 
 export default {
@@ -19,23 +19,12 @@ export default {
 	},
 	computed: {
 		...mapState({
-			authenticated: (state) => state.user.authenticated
+			authenticated: (state) => state.user.userInfo.authenticated
 		})
 	},
 	created: function () {
-		console.log(window.location)
+		console.log("this one: ", window.location)
 	},
-	methods: {
-		// getHashParams() {
-		// 	var hashParams = {}
-		// 	var e,
-		// 		r = /([^&;=]+)=?([^&;]*)/g,
-		// 		q = window.location.hash.substring(1)
-		// 	while ((e = r.exec(q))) {
-		// 		hashParams[e[1]] = decodeURIComponent(e[2])
-		// 	}
-		// 	return hashParams
-		// }
-	}
+	methods: {}
 }
 </script>
