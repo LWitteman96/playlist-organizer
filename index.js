@@ -12,7 +12,8 @@ require("dotenv").config()
 const client_secret = process.env.CLIENT_SECRET
 const client_id = process.env.CLIENT_ID
 const port = process.env.PORT || 3000
-const redirect_uri = "http://localhost:3000/callback"
+const redirect_uri =
+	process.env.REDIRECT_URI || "http://localhost:3000/callback"
 const stateKey = "spotify_auth_state"
 
 let router = express.Router()
