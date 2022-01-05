@@ -7,47 +7,24 @@ const cors = require("cors")
 const cookieParser = require("cookie-parser")
 const querystring = require("querystring")
 
-const client_secret = "978667b57b134a038bb7444b4f77c0d2"
+require('dotenv').config()
 
-let port = process.env.PORT || 3000
+
+const client_secret = process.env.CLIENT_SECRET
+const client_id = process.env.CLIENT_ID
+const port = process.env.PORT || 3000
+const redirect_uri = "http://localhost:3000/callback"
+const stateKey = "spotify_auth_state"
 
 let router = express.Router()
 const app = express()
+app.use(cookieParser())
 
-const serve = servestatic(path.join(path.resolve(), "dist"))
 
 console.log("environment:", process.env.NODE_ENV)
 if (process.env.NODE_ENV === "production") {
-	app.use(serve)
+	app.use(servestatic(path.join(path.resolve(), "dist")))
 }
-
-var corsOptions = {
-	origin: "localhost:8080"
-}
-
-const allowCrossDomain = function (req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*")
-	res.header("Access-Control-Allow-Methods", "*")
-	res.header("Access-Control-Allow-Headers", "*")
-	next()
-}
-
-app.use(allowCrossDomain)
-
-// app.use(servestatic(path.join(path.resolve(), 'dist')));
-app.use(cors(corsOptions))
-app.use(cookieParser())
-
-// router.use((req, res, next) => {
-//    res.setHeader('Content-Type', 'application/json');
-//    res.setHeader('Access-Control-Allow-Origin', process.env.VUE_APP_API_URL);
-//    next();
-// })
-
-var client_id = "c643de3168624726afda247ba44e6b52"
-var redirect_uri = "http://localhost:3000/callback"
-
-var stateKey = "spotify_auth_state"
 
 const generateRandomString = (length) => {
 	let text = ""
@@ -69,10 +46,8 @@ app.get("/success", function (req, res) {
 })
 
 app.get("/login", function (req, res) {
-	console.log("someone is try to login")
 	var state = generateRandomString(16)
 	res.cookie(stateKey, state)
-	console.log("cookie", stateKey, state)
 	var scope = "user-read-private user-read-email"
 
 	res.redirect(
@@ -88,7 +63,6 @@ app.get("/login", function (req, res) {
 })
 
 app.get("/callback", function (req, res) {
-	console.log("now here you go again")
 	const code = req.query.code || null
 	const state = req.query.state || null
 
