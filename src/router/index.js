@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router"
 import Home from "../views/Home.vue"
-import WelcomeScreen from "../components/WelcomeScreen.vue"
-import AfterLogin from "../components/AfterLogin.vue"
+import Login from "../components/atoms/Login.vue"
+import AfterLogin from "../views/AfterLogin.vue"
 import store from "../store"
 // import store from "../store"
 
@@ -19,15 +19,8 @@ const routes = [
 	},
 	{
 		path: "/login",
-    name: "Login",
-    component: WelcomeScreen
-		// beforeEnter() {
-		// 	if (process.env.NODE_ENV == "development") {
-		// 		window.location.href = "/api/login"
-		// 	} else {
-		// 		window.location.href = "/login"
-		// 	}
-		// }
+		name: "Login",
+		component: Login
 	},
 	{
 		path: "/success",
