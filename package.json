@@ -44,7 +44,20 @@
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "es6": true
+    },
+    "rules": {
+      "no-case-declarations": "off",
+      "prettier/prettier": [
+        "warn",
+        {
+          "useTabs": true,
+          "singleQuote": false,
+          "semi": false,
+          "trailingComma": "none"
+        }
+      ]
     },
     "extends": [
       "plugin:vue/vue3-essential",
@@ -54,7 +67,6 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {},
     "overrides": [
       {
         "files": [
