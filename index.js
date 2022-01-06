@@ -61,7 +61,6 @@ app.get("/login", function (req, res) {
 	)
 })
 
-// REFACTOR        !!!!
 app.get("/callback", function (req, res) {
 	const code = req.query.code || null
 	const state = req.query.state || null
@@ -77,69 +76,71 @@ app.get("/callback", function (req, res) {
 					error: "state_mismatch"
 				})
 		)
-	} else {
-		res.clearCookie(stateKey)
-		var authOptions = {
-			url: "https://accounts.spotify.com/api/token",
-			form: {
-				code: code,
-				redirect_uri: redirect_uri,
-				grant_type: "authorization_code"
-			},
-			headers: {
-				Authorization:
-					"Basic " +
-					new Buffer(client_id + ":" + client_secret).toString(
-						"base64"
-					),
-				"Content-Type": "application/x-www-form-urlencoded"
-			},
+	}
+	res.clearCookie(stateKey)
+	var authOptions = {
+		url: "https://accounts.spotify.com/api/token",
+		form: {
+			code: code,
+			redirect_uri: redirect_uri,
+			grant_type: "authorization_code"
+		},
+		headers: {
+			Authorization:
+				"Basic " +
+				new Buffer(client_id + ":" + client_secret).toString("base64"),
+			"Content-Type": "application/x-www-form-urlencoded"
+		},
+		json: true
+	}
+	request.post(authOptions, function (error, response, body) {
+		console.log(response.statusCode)
+		if (error && response.statusCode != 200) {
+			console.error(
+				"request has failed. No authorization token was fetched."
+			)
+			res.redirect(
+				"?" +
+					querystring.stringify({
+						error: "invalid_token"
+					})
+			)
+		}
+		var access_token = body.access_token,
+			refresh_token = body.refresh_token
+		var options = {
+			url: "https://api.spotify.com/v1/me",
+			headers: { Authorization: "Bearer " + access_token },
 			json: true
 		}
-		request.post(authOptions, function (error, response, body) {
-			console.log(response.statusCode)
-			if (!error && response.statusCode === 200) {
-				var access_token = body.access_token,
-					refresh_token = body.refresh_token
-				var options = {
-					url: "https://api.spotify.com/v1/me",
-					headers: { Authorization: "Bearer " + access_token },
-					json: true
-				}
-				request.get(options, function (error, response, body) {
-					console.log(body)
-					const id = body.id
-					if (!error && response.statusCode === 200) {
-						if (process.env.NODE_ENV == "development") {
-							res.redirect(
-								"http://localhost:8080/success?" +
-									querystring.stringify({
-										access_token: access_token,
-										refresh_token: refresh_token,
-										id: id
-									})
-							)
-						} else {
-							res.redirect(
-								"/success?" +
-									querystring.stringify({
-										access_token: access_token,
-										refresh_token: refresh_token
-									})
-							)
-						}
-					}
-				})
+		request.get(options, function (error, response, body) {
+			console.log(body)
+			const id = body.id
+			if (error && response.statusCode != 200) {
+				console.error(
+					"request has failed. No authorization token was fetched."
+				)
+			}
+			if (process.env.NODE_ENV == "development") {
+				res.redirect(
+					"http://localhost:8080/success?" +
+						querystring.stringify({
+							access_token: access_token,
+							refresh_token: refresh_token,
+							id: id
+						})
+				)
 			} else {
 				res.redirect(
-					"?" +
+					"/success?" +
 						querystring.stringify({
-							error: "invalid_token"
+							access_token: access_token,
+							refresh_token: refresh_token
 						})
 				)
 			}
 		})
-	}
+	})
 })
 
 app.use("/api", router)

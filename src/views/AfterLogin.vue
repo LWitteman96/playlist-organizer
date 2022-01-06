@@ -1,18 +1,19 @@
 <template>
-	<div>
-		<h1>Yeey you are logged in.</h1>
-		<div v-for="playlist in this.playlists" :key="playlist.id">
-			{{ playlist.name }}
-			<img :src="`${playlist.images[0].url}`" alt="" />
-		</div>
+	<div class="main">
+		<TileGrid />
 	</div>
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from "vuex"
 
+import TileGrid from "../components/molecules/TileGrid.vue"
+
 export default {
 	name: "AfterLogin",
+	components: {
+		TileGrid
+	},
 	computed: {
 		...mapState({
 			authenticated: (state) => state.user.userInfo.authenticated,
@@ -43,4 +44,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped>
+/* .main {
+	width: 100vw;
+	height: 100vh;
+} */
+</style>

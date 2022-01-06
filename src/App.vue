@@ -1,30 +1,33 @@
 <template>
-	<div id="nav">
-		<router-link to="/">Home</router-link> |
-		<router-link to="/about">About</router-link>
-		<router-view />
-	</div>
+	<section class="main-background">
+		<div id="nav">
+			<router-link to="/">Home</router-link> |
+			<router-link to="/about">About</router-link>
+			<router-view />
+		</div>
+	</section>
 </template>
 
 <style>
-#app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
-	color: #2c3e50;
+:root {
+	--primary-green: rgb(30, 215, 96);
+	--primary-black: rgb(25, 20, 20);
+	--background-gradient: linear-gradient(#454545, rgb(25, 20, 20) 70%);
 }
 
-#nav {
-	padding: 30px;
+* {
+	box-sizing: border-box;
 }
 
-#nav a {
-	font-weight: bold;
-	color: #2c3e50;
+body {
+	/* overflow: hidden; */
+	padding: 0;
+	margin: 0;
 }
 
-#nav a.router-link-exact-active {
-	color: #42b983;
+.main-background {
+	width: 100vw;
+	height: 100vh;
+	background-image: var(--background-gradient);
 }
 </style>

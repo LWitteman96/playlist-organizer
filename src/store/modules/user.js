@@ -7,7 +7,12 @@ const state = {
 	}
 }
 
-const getters = {}
+const getters = {
+	NinePlaylists: (state) => {
+		let nine = state.userInfo.playlists?.items?.slice(0, 9)
+		return nine
+	}
+}
 
 const actions = {
 	async fetchPlaylists({ commit }) {
