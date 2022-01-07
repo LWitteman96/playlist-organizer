@@ -8,10 +8,12 @@ const state = {
 }
 
 const getters = {
+	AccessToken: (state) => state.userInfo.access_token,
 	NinePlaylists: (state) => {
 		let nine = state.userInfo.playlists?.items?.slice(0, 9)
 		return nine
-	}
+	},
+	AllPlaylists: (state) => state.userInfo.playlists
 }
 
 const actions = {
@@ -35,26 +37,6 @@ const actions = {
 			console.log(error)
 		}
 	}
-	// async createPlaylist() {
-	// 	const options = {
-	// 		method: "POST",
-	// 		headers: {
-	// 			Authorization: "Bearer " + state.userInfo.access_token,
-	// 			"Content-Type": "application/json"
-	// 		},
-	// 		json: true
-	// 	}
-	// 	try {
-	// 		const response = await fetch(
-	// 			"https://api.spotify.com/v1/me/playlists?limit=40",
-	// 			options
-	// 		)
-	// 		const result = await response.json()
-	// 		commit("setUserPlaylists", result)
-	// 	} catch (error) {
-	// 		console.log(error)
-	// 	}
-	// }
 }
 
 const mutations = {

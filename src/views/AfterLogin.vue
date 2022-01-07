@@ -1,6 +1,10 @@
 <template>
 	<div class="main">
 		<TileGrid />
+		<div class="playlist-lists">
+			<PinnedPlaylists />
+			<AllPlaylists />
+		</div>
 	</div>
 </template>
 
@@ -8,11 +12,15 @@
 import { mapActions, mapMutations, mapState } from "vuex"
 
 import TileGrid from "../components/molecules/TileGrid.vue"
+import PinnedPlaylists from "../components/molecules/PinnedPlaylists.vue"
+import AllPlaylists from "../components/molecules/AllPlaylists.vue"
 
 export default {
 	name: "AfterLogin",
 	components: {
-		TileGrid
+		TileGrid,
+		PinnedPlaylists,
+		AllPlaylists
 	},
 	computed: {
 		...mapState({
@@ -29,11 +37,14 @@ export default {
 			window.history.pushState({}, document.title, "/")
 			console.log("calling fetchPlaylists")
 			this.fetchPlaylists()
+			console.log("calling webplayer")
+			console.log(`this is the access token ${this.access_token}`)
+			this.initializeSpotifyWebPlay()
 		}
 	},
 	methods: {
 		...mapMutations(["toggleAuthenticated", "set_tokens"]),
-		...mapActions(["fetchPlaylists"]),
+		...mapActions(["fetchPlaylists", "initializeSpotifyWebPlay"]),
 		getHashParams() {
 			const params = new URLSearchParams(document.location.search)
 			const access_token = params.get("access_token")
@@ -45,8 +56,14 @@ export default {
 </script>
 
 <style lang="css" scoped>
-/* .main {
-	width: 100vw;
-	height: 100vh;
-} */
+.main {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.playlist-lists {
+	display: flex;
+	flex-direction: column;
+}
 </style>
