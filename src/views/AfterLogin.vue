@@ -1,10 +1,12 @@
 <template>
 	<div class="main">
-		<TileGrid />
+		<TrackList class="tracklist" />
+		<TileGrid class="tilegrid" />
 		<div class="playlist-lists">
-			<PinnedPlaylists />
-			<AllPlaylists />
+			<PinnedPlaylists class="pinned-playlists" />
+			<AllPlaylists class="all-playlists" />
 		</div>
+		<PlayBackTray class="play-back-tray" />
 	</div>
 </template>
 
@@ -14,13 +16,17 @@ import { mapActions, mapMutations, mapState } from "vuex"
 import TileGrid from "../components/molecules/TileGrid.vue"
 import PinnedPlaylists from "../components/molecules/PinnedPlaylists.vue"
 import AllPlaylists from "../components/molecules/AllPlaylists.vue"
+import TrackList from "../components/molecules/TrackList.vue"
+import PlayBackTray from "../components/molecules/PlayBackTray.vue"
 
 export default {
 	name: "AfterLogin",
 	components: {
 		TileGrid,
 		PinnedPlaylists,
-		AllPlaylists
+		AllPlaylists,
+		TrackList,
+		PlayBackTray
 	},
 	computed: {
 		...mapState({
@@ -58,12 +64,24 @@ export default {
 <style lang="css" scoped>
 .main {
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	position: relative;
+	/* justify-content: center; */
+	/* align-items: center; */
 }
 
 .playlist-lists {
 	display: flex;
 	flex-direction: column;
+	margin-top: 10vh;
+}
+
+.tracklist {
+	/* justify-self: end; */
+}
+.play-back-tray {
+	position: fixed;
+	bottom: 0;
+	width: 100vw;
+	height: 5em;
 }
 </style>

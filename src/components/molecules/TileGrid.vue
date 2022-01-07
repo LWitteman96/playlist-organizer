@@ -1,5 +1,5 @@
 <template>
-	<div class="container">
+	<div class="wrapper">
 		<div id="app">
 			<ul :style="gridStyle" class="card-list">
 				<li
@@ -35,8 +35,7 @@ export default {
 		...mapGetters(["NinePlaylists"]),
 		gridStyle() {
 			return {
-				gridTemplateColumns: `repeat(${this.numberOfColumns}, minmax(160px, 3em))`,
-				width: "450px"
+				gridTemplateColumns: `repeat(${this.numberOfColumns}, minmax(160px, 3em))`
 			}
 		}
 	},
@@ -51,11 +50,13 @@ export default {
 }
 </script>
 
-<style>
-.container {
+<style scoped>
+.wrapper {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	height: 60vh;
+	width: 40vw;
 }
 
 .playlist-tile {
@@ -70,7 +71,6 @@ export default {
 
 body {
 	background: #20262e;
-	padding: 20px;
 	font-family: Helvetica;
 }
 
@@ -78,7 +78,6 @@ body {
 	width: 50vw;
 	height: 50vh;
 	border-radius: 4px;
-	padding: 20px;
 	transition: all 0.2s;
 }
 

@@ -3,7 +3,8 @@ const state = {
 		authenticated: false,
 		access_token: null,
 		refresh_token: null,
-		playlists: {}
+		playlists: {},
+		savedTracks: []
 	}
 }
 
@@ -36,6 +37,27 @@ const actions = {
 		} catch (error) {
 			console.log(error)
 		}
+	},
+	async fetchSavedTracklist({ commit }) {
+		console.log("fetchSavedTracklist has been called")
+		const options = {
+			method: "GET",
+			headers: {
+				Authorization: "Bearer " + state.userInfo.access_token,
+				"Content-Type": "application/json"
+			},
+			json: true
+		}
+		try {
+			const response = await fetch(
+				"https://api.spotify.com/v1/me/tracks?limit=50",
+				options
+			)
+			const result = await response.json()
+			commit("addSavedTracks", result.items)
+		} catch (error) {
+			console.log(error)
+		}
 	}
 }
 
@@ -47,7 +69,14 @@ const mutations = {
 		(state.userInfo.refresh_token = tokens.refresh_token)
 	),
 	setUserPlaylists: (state, playlists) =>
-		(state.userInfo.playlists = playlists)
+		(state.userInfo.playlists = playlists),
+	addSavedTracks: (state, tracks) => {
+		if (!state.userInfo.savedTracks.length) {
+			state.userInfo.savedTracks = tracks
+		} else {
+			state.userInfo.savedTracks.push(tracks)
+		}
+	}
 }
 
 export default {

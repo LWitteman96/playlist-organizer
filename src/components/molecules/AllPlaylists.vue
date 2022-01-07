@@ -33,7 +33,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .all {
 }
 
@@ -52,8 +52,6 @@ h1 {
 
 .list {
 	padding: 0px;
-}
-
-.list {
+	list-style-type: none;
 }
 </style>

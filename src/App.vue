@@ -12,7 +12,11 @@
 :root {
 	--primary-green: rgb(30, 215, 96);
 	--primary-black: rgb(25, 20, 20);
-	--background-gradient: linear-gradient(#454545, rgb(25, 20, 20) 70%);
+	--background-gradient: linear-gradient(#535353, rgb(25, 20, 20) 90%);
+	--background-gradient-reverse: linear-gradient(
+		rgb(25, 20, 20),
+		#1c1c1c 90%
+	);
 }
 
 * {
