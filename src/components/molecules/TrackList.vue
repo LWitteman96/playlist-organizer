@@ -13,6 +13,7 @@
 				<TrackListItem
 					:track_title="track.track.name"
 					:artist="track.track.artists[0].name"
+					:uri="track.track.uri"
 				/>
 			</li>
 		</ul>
@@ -48,7 +49,7 @@ export default {
 
 <style>
 .track-list-container {
-	width: 30vw;
+	width: 25vw;
 }
 
 .track-list {

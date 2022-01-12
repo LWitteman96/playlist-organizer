@@ -1,3 +1,5 @@
+import client from "../../api/fetchClient"
+
 const state = {
 	userInfo: {
 		authenticated: false,
@@ -14,50 +16,23 @@ const getters = {
 		let nine = state.userInfo.playlists?.items?.slice(0, 9)
 		return nine
 	},
-	AllPlaylists: (state) => state.userInfo.playlists
+	AllPlaylists: (state) => state.userInfo.playlists,
+	savedTracks: (state) => state.userInfo.savedTracks
 }
 
 const actions = {
 	async fetchPlaylists({ commit }) {
-		const options = {
-			method: "GET",
-			headers: {
-				Authorization: "Bearer " + state.userInfo.access_token,
-				"Content-Type": "application/json"
-			},
-			json: true
-		}
-		try {
-			const response = await fetch(
-				"https://api.spotify.com/v1/me/playlists?limit=40",
-				options
-			)
-			const result = await response.json()
-			commit("setUserPlaylists", result)
-		} catch (error) {
-			console.log(error)
-		}
+		const result = await client("me/playlists?limit=40", {
+			token: state.userInfo.access_token
+		})
+		console.log("result", result)
+		commit("setUserPlaylists", result)
 	},
 	async fetchSavedTracklist({ commit }) {
-		console.log("fetchSavedTracklist has been called")
-		const options = {
-			method: "GET",
-			headers: {
-				Authorization: "Bearer " + state.userInfo.access_token,
-				"Content-Type": "application/json"
-			},
-			json: true
-		}
-		try {
-			const response = await fetch(
-				"https://api.spotify.com/v1/me/tracks?limit=50",
-				options
-			)
-			const result = await response.json()
-			commit("addSavedTracks", result.items)
-		} catch (error) {
-			console.log(error)
-		}
+		const result = await client("me/tracks?limit=50", {
+			token: state.userInfo.access_token
+		})
+		commit("addSavedTracks", result.items)
 	}
 }
 

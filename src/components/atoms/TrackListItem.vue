@@ -1,16 +1,26 @@
 <template>
-	<div class="track-item">
+	<div @click="this.startResume({ device, tracks: uri })" class="track-item">
 		<span class="artist">{{ artist }}</span>
 		<span class="title">{{ track_title }}</span>
 	</div>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex"
 export default {
 	name: "TrackListItem",
 	props: {
 		track_title: String,
-		artist: String
+		artist: String,
+		uri: String
+	},
+	computed: {
+		...mapState({
+			device: (state) => state.webplayback.this_device
+		})
+	},
+	methods: {
+		...mapActions(["startResume"])
 	}
 }
 </script>
@@ -20,6 +30,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	margin: 1em 0;
+	cursor: pointer;
 }
 .title,
 .artist {

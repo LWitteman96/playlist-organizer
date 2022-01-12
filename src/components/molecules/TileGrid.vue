@@ -6,6 +6,13 @@
 					v-for="(playlist, index) in this.NinePlaylists"
 					:key="index"
 					class="card-item"
+					:class="test(index)"
+					v-focus="index"
+					@keyup.left="test1(index)"
+					@keyup.up="test1(index)"
+					@keyup.right="test1(index)"
+					@keyup.down="test1(index)"
+					@click="test1(index)"
 				>
 					<PlaylistTile
 						:image="
@@ -46,7 +53,26 @@ export default {
 		}
 	},
 	created() {},
-	methods: {}
+	methods: {
+		test(index) {
+			if (index == 5) {
+				this.$store.state.user.tileSelected = 5
+				return "selected"
+			}
+			return ""
+		},
+		test1(index) {
+			console.log(index)
+		}
+	},
+	directives: {
+		focus: {
+			inserted: function (el, value) {
+				console.log(value)
+				el.focus()
+			}
+		}
+	}
 }
 </script>
 
@@ -83,5 +109,10 @@ body {
 
 ul {
 	list-style-type: none;
+}
+
+.selected {
+	padding: 2px;
+	border: 1px solid white;
 }
 </style>

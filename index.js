@@ -20,6 +20,13 @@ let router = express.Router()
 const app = express()
 app.use(cookieParser())
 
+app.use((req, res, next) => {
+	res.append("Access-Control-Allow-Origin", ["*"])
+	res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
+	res.append("Access-Control-Allow-Headers", "Content-Type")
+	next()
+})
+
 console.log("environment:", process.env.NODE_ENV)
 if (process.env.NODE_ENV === "production") {
 	app.use(servestatic(path.join(path.resolve(), "dist")))
@@ -47,7 +54,8 @@ app.get("/success", function (req, res) {
 app.get("/login", function (req, res) {
 	var state = generateRandomString(16)
 	res.cookie(stateKey, state)
-	var scope = "user-read-private user-read-email user-library-read"
+	var scope =
+		"user-read-private user-read-email user-library-read streaming user-read-playback-state user-modify-playback-state"
 
 	res.redirect(
 		"https://accounts.spotify.com/authorize?" +

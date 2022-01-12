@@ -32,25 +32,42 @@ export default {
 		...mapState({
 			authenticated: (state) => state.user.userInfo.authenticated,
 			access_token: (state) => state.user.userInfo.access_token,
-			playlists: (state) => state.user.userInfo.playlists.items
+			playlists: (state) => state.user.userInfo.playlists.items,
+			this_device: (state) => state.webplayback.this_device,
+			playbackState: (state) => state.webplayback.playbackState
 		})
 	},
 	created() {
+		if (!window.Spotify) {
+			const scriptTag = document.createElement("script")
+			scriptTag.src = "https://sdk.scdn.co/spotify-player.js"
+
+			document.head.appendChild(scriptTag)
+		}
 		this.$store.commit("toggleAuthenticated")
 		const authCreds = this.getHashParams()
 		this.$store.commit("set_tokens", authCreds)
 		if (this.access_token) {
 			window.history.pushState({}, document.title, "/")
-			console.log("calling fetchPlaylists")
 			this.fetchPlaylists()
-			console.log("calling webplayer")
-			console.log(`this is the access token ${this.access_token}`)
 			this.initializeSpotifyWebPlay()
+		}
+	},
+	watch: {
+		this_device(device) {
+			if (!this.playbackState) {
+				this.transferPlayBack(device)
+			}
 		}
 	},
 	methods: {
 		...mapMutations(["toggleAuthenticated", "set_tokens"]),
-		...mapActions(["fetchPlaylists", "initializeSpotifyWebPlay"]),
+		...mapActions([
+			"fetchPlaylists",
+			"initializeSpotifyWebPlay",
+			"getPlaybackState",
+			"transferPlayBack"
+		]),
 		getHashParams() {
 			const params = new URLSearchParams(document.location.search)
 			const access_token = params.get("access_token")
@@ -65,7 +82,7 @@ export default {
 .main {
 	display: flex;
 	position: relative;
-	/* justify-content: center; */
+	justify-content: space-evenly;
 	/* align-items: center; */
 }
 
@@ -73,6 +90,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	margin-top: 10vh;
+	align-self: flex-end;
 }
 
 .tracklist {
@@ -83,5 +101,6 @@ export default {
 	bottom: 0;
 	width: 100vw;
 	height: 5em;
+	z-index: 100;
 }
 </style>
