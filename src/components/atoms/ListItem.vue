@@ -1,6 +1,6 @@
 <template>
 	<div class="title">
-		<i :class="isPinned"></i>
+		<i :class="isPinned" @click="$emit('playlistClicked')"></i>
 		<span class="title-text">{{ this.playlistTitle }}</span>
 	</div>
 </template>
@@ -21,7 +21,8 @@ export default {
 				return "fas fa-plus"
 			}
 		}
-	}
+	},
+	methods: {}
 }
 </script>
 

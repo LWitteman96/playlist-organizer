@@ -4,10 +4,13 @@
 		<div class="scrollable">
 			<ul class="list">
 				<li
-					v-for="(playlist, index) in this.AllPlaylists.items"
+					v-for="(playlist, index) in this.AllPlaylists?.items"
 					:key="index"
 				>
-					<ListItem :playlistTitle="playlist.name"></ListItem>
+					<ListItem
+						:playlistTitle="playlist.name"
+						@playlistClicked="pin(index)"
+					></ListItem>
 				</li>
 			</ul>
 		</div>
@@ -15,7 +18,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex"
+import { mapGetters, mapMutations } from "vuex"
 
 import ListItem from "../atoms/ListItem.vue"
 
@@ -29,6 +32,13 @@ export default {
 	},
 	created() {
 		console.log("this", this.AllPlaylists)
+	},
+	methods: {
+		...mapMutations(["pinPlaylist"]),
+		pin(index) {
+			console.log("this triggered", index)
+			this.pinPlaylist(index)
+		}
 	}
 }
 </script>

@@ -6,6 +6,7 @@
 				<ListItem
 					:pinned="true"
 					:playlistTitle="playlist.name"
+					@playlistClicked="unpin(index)"
 				></ListItem>
 			</li>
 		</ul>
@@ -13,7 +14,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex"
+import { mapGetters, mapState, mapMutations } from "vuex"
 
 import ListItem from "../atoms/ListItem.vue"
 
@@ -23,7 +24,18 @@ export default {
 		ListItem
 	},
 	computed: {
-		...mapGetters(["NinePlaylists"])
+		...mapGetters(["AllPlaylists"]),
+		...mapState({
+			playlists: (state) => state.user.userInfo.playlists.items,
+			NinePlaylists: (state) => state.user.userInfo.NinePlaylists
+		})
+	},
+	methods: {
+		...mapMutations(["unpinPlaylist"]),
+		unpin(index) {
+			console.log("this triggered", index)
+			this.unpinPlaylist(index)
+		}
 	}
 }
 </script>

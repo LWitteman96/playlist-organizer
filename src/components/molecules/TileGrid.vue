@@ -6,13 +6,7 @@
 					v-for="(playlist, index) in this.NinePlaylists"
 					:key="index"
 					class="card-item"
-					:class="test(index)"
-					v-focus="index"
-					@keyup.left="test1(index)"
-					@keyup.up="test1(index)"
-					@keyup.right="test1(index)"
-					@keyup.down="test1(index)"
-					@click="test1(index)"
+					@click="addToPlaylist(index)"
 				>
 					<PlaylistTile
 						:image="
@@ -28,7 +22,7 @@
 
 <script>
 import PlaylistTile from "../atoms/PlaylistTile.vue"
-import { mapGetters, mapState } from "vuex"
+import { mapState } from "vuex"
 
 export default {
 	name: "TileGrid",
@@ -37,9 +31,9 @@ export default {
 	},
 	computed: {
 		...mapState({
-			playlists: (state) => state.user.userInfo.playlists.items
+			playlists: (state) => state.user.userInfo.playlists.items,
+			NinePlaylists: (state) => state.user.userInfo.NinePlaylists
 		}),
-		...mapGetters(["NinePlaylists"]),
 		gridStyle() {
 			return {
 				gridTemplateColumns: `repeat(${this.numberOfColumns}, minmax(160px, 3em))`
@@ -54,23 +48,8 @@ export default {
 	},
 	created() {},
 	methods: {
-		test(index) {
-			if (index == 5) {
-				this.$store.state.user.tileSelected = 5
-				return "selected"
-			}
-			return ""
-		},
-		test1(index) {
+		addToPlaylist(index) {
 			console.log(index)
-		}
-	},
-	directives: {
-		focus: {
-			inserted: function (el, value) {
-				console.log(value)
-				el.focus()
-			}
 		}
 	}
 }
