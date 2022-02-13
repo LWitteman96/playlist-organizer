@@ -1,6 +1,15 @@
 <template>
 	<div class="home">
-		<router-link v-if="!authenticated" to="/login">login</router-link>
+		<div class="login">
+			<img
+				class="spotify-icon"
+				src="../assets/Spotify_Icon_RGB_Green.png"
+				alt=""
+			/>
+			<router-link v-if="!authenticated" to="/login" class="login-link"
+				>Login</router-link
+			>
+		</div>
 	</div>
 </template>
 
@@ -21,3 +30,27 @@ export default {
 	methods: {}
 }
 </script>
+
+<style scoped>
+.login {
+	background: var(--primary-black);
+	font-size: 1.8rem;
+	height: 4rem;
+	width: 10rem;
+	border-radius: 50px;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.login-link {
+	text-decoration: none;
+	color: var(--primary-green);
+}
+
+.spotify-icon {
+	width: 2rem;
+	/* background: purple; */
+	height: 2rem;
+}
+</style>

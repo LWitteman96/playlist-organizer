@@ -14,7 +14,15 @@ const state = {
 const getters = {
 	AccessToken: (state) => state.userInfo.access_token,
 	AllPlaylists: (state) => state.userInfo.playlists,
-	savedTracks: (state) => state.userInfo.savedTracks
+	savedTracks: (state) => state.userInfo.savedTracks,
+	savedTracksUris: (state) => {
+		const uris = state.userInfo.savedTracks.map((track) => {
+			console.log("track", track.track.name)
+			return track.track.uri
+		})
+		console.log("uris from savedTracksUris getter", uris)
+		return uris
+	}
 }
 
 const actions = {
@@ -30,17 +38,19 @@ const actions = {
 		const result = await client("me/tracks?limit=50", {
 			token: state.userInfo.access_token
 		})
+		console.log("savedTracks Item", result)
 		commit("addSavedTracks", result.items)
 	},
-	async addItemToPlaylist({ rootState }, index) {
-		const playlist_id = state.NinePlaylists[index].id
-		const result = await client(`/playlists/${playlist_id}/tracks`, {
+	async addItemToPlaylist({ rootState }, playlistId) {
+		const uris = [
+			rootState.webplayback.playbackState.track_window.current_track.uri
+		]
+		const result = await client(`playlists/${playlistId}/tracks`, {
 			token: state.userInfo.access_token,
 			method: "POST",
 			body: {
 				position: 0,
-				uris: rootState.webplayback.playbackState.track_window
-					.current_track.uri
+				uris
 			}
 		})
 		console.log("addItemToPlaylist", result)
@@ -64,10 +74,11 @@ const mutations = {
 		}
 	},
 	setNinePlaylists: (state) => {
-		;(state.userInfo.NinePlaylists =
-			state.userInfo?.playlists?.items?.slice(0, 9))(
-			(state.userInfo.playlists.items =
-				state.userInfo.playlists.items.slice(9))
+		; (state.userInfo.NinePlaylists = state.userInfo?.playlists?.items?.slice(
+			0,
+			9
+		))(
+			(state.userInfo.playlists.items = state.userInfo.playlists.items.slice(9))
 		)
 	},
 	unpinPlaylist: (state, playlist) => {
@@ -83,10 +94,9 @@ const mutations = {
 			state.userInfo.NinePlaylists.push(
 				state.userInfo.playlists.items[playlist]
 			)
-			state.userInfo.playlists.items =
-				state.userInfo.playlists.items.filter(
-					(item, index) => playlist !== index
-				)
+			state.userInfo.playlists.items = state.userInfo.playlists.items.filter(
+				(item, index) => playlist !== index
+			)
 		} else {
 			console.error("Can't pin another playlist")
 		}

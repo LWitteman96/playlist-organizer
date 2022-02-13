@@ -83,14 +83,13 @@ export default {
 	display: flex;
 	position: relative;
 	justify-content: space-evenly;
-	/* align-items: center; */
 }
 
 .playlist-lists {
 	display: flex;
 	flex-direction: column;
 	margin-top: 10vh;
-	align-self: flex-end;
+	align-self: flex-start;
 }
 
 .tracklist {

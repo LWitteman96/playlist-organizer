@@ -2,10 +2,7 @@
 	<div class="wrapper">
 		<div class="controls">
 			<i @click="this.toggleShuffle(device)" class="fas fa-random"></i>
-			<i
-				@click="this.skipToPrevious(device)"
-				class="fas fa-step-backward"
-			></i>
+			<i @click="this.skipToPrevious(device)" class="fas fa-step-backward"></i>
 			<i
 				v-if="!this.playing"
 				@click="this.startResume(device)"

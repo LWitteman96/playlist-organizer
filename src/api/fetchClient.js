@@ -23,9 +23,11 @@ export default function client(endpoint, { body, ...customConfig } = {}) {
 		.fetch(`${base_url}/${endpoint}`, config)
 		.then(async (response) => {
 			if (response.ok) {
+				console.log(response.status)
 				return await response.json()
 			} else {
 				const errorMessage = await response.text()
+				console.log("something went wrong....")
 				return Promise.reject(new Error(errorMessage))
 			}
 		})

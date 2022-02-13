@@ -55,17 +55,17 @@ app.get("/login", function (req, res) {
 	var state = generateRandomString(16)
 	res.cookie(stateKey, state)
 	var scope =
-		"user-read-private user-read-email user-library-read streaming user-read-playback-state user-modify-playback-state"
+		"user-read-private user-read-email user-library-read streaming user-read-playback-state user-modify-playback-state user-read-playback-position playlist-modify-private playlist-read-collaborative playlist-modify-public"
 
 	res.redirect(
 		"https://accounts.spotify.com/authorize?" +
-			querystring.stringify({
-				response_type: "code",
-				client_id: client_id,
-				scope: scope,
-				redirect_uri: redirect_uri,
-				state: state
-			})
+		querystring.stringify({
+			response_type: "code",
+			client_id: client_id,
+			scope: scope,
+			redirect_uri: redirect_uri,
+			state: state
+		})
 	)
 })
 
@@ -80,9 +80,9 @@ app.get("/callback", function (req, res) {
 	if (state === null || state !== storedState) {
 		res.redirect(
 			"/#" +
-				querystring.stringify({
-					error: "state_mismatch"
-				})
+			querystring.stringify({
+				error: "state_mismatch"
+			})
 		)
 	}
 	res.clearCookie(stateKey)
@@ -104,14 +104,12 @@ app.get("/callback", function (req, res) {
 	request.post(authOptions, function (error, response, body) {
 		console.log(response.statusCode)
 		if (error && response.statusCode != 200) {
-			console.error(
-				"request has failed. No authorization token was fetched."
-			)
+			console.error("request has failed. No authorization token was fetched.")
 			res.redirect(
 				"?" +
-					querystring.stringify({
-						error: "invalid_token"
-					})
+				querystring.stringify({
+					error: "invalid_token"
+				})
 			)
 		}
 		var access_token = body.access_token,
@@ -125,26 +123,24 @@ app.get("/callback", function (req, res) {
 			console.log(body)
 			const id = body.id
 			if (error && response.statusCode != 200) {
-				console.error(
-					"request has failed. No authorization token was fetched."
-				)
+				console.error("request has failed. No authorization token was fetched.")
 			}
 			if (process.env.NODE_ENV == "development") {
 				res.redirect(
 					"http://localhost:8080/success?" +
-						querystring.stringify({
-							access_token: access_token,
-							refresh_token: refresh_token,
-							id: id
-						})
+					querystring.stringify({
+						access_token: access_token,
+						refresh_token: refresh_token,
+						id: id
+					})
 				)
 			} else {
 				res.redirect(
 					"/success?" +
-						querystring.stringify({
-							access_token: access_token,
-							refresh_token: refresh_token
-						})
+					querystring.stringify({
+						access_token: access_token,
+						refresh_token: refresh_token
+					})
 				)
 			}
 		})
