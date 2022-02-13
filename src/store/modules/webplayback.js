@@ -28,7 +28,6 @@ const actions = {
 				console.log("Ready with Device ID", device_id)
 			})
 			player.addListener("player_state_changed", (response) => {
-				console.log("event listener state object", response)
 				commit("setPlaybackState", response)
 				commit("setIsPlaying", !response.paused)
 			})
@@ -84,10 +83,13 @@ const actions = {
 				}
 			})
 		} else {
-			console.log("triggered start without tracks")
+			console.log("triggered start without tracks, loaded savedTracks")
 			result = await client(`me/player/play?${device_id}`, {
 				token: rootGetters.AccessToken,
-				method: "PUT"
+				method: "PUT",
+				body: {
+					uris: rootGetters.savedTracksUris
+				}
 			})
 		}
 		console.log("startResume", result)
@@ -115,8 +117,7 @@ const actions = {
 	},
 	async toggleShuffle({ rootGetters }, device_id) {
 		const result = await client(
-			`me/player/shuffle?${device_id}&state=${!state?.playbackState
-				?.shuffle}`,
+			`me/player/shuffle?${device_id}&state=${!state?.playbackState?.shuffle}`,
 			{
 				token: rootGetters.AccessToken,
 				method: "PUT"
@@ -138,8 +139,7 @@ const actions = {
 
 const mutations = {
 	togglePlayerReady: (state, device_id) => (
-		(state.playerReady = !state.playerReady),
-		(state.this_device = device_id)
+		(state.playerReady = !state.playerReady), (state.this_device = device_id)
 	),
 	setPlaybackState: (state, playbackState) =>
 		(state.playbackState = playbackState),

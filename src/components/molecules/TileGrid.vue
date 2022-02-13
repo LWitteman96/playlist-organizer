@@ -9,9 +9,7 @@
 					@click="addToPlaylist(index)"
 				>
 					<PlaylistTile
-						:image="
-							playlist.images[1]?.url || playlist.images[0]?.url
-						"
+						:image="playlist.images[1]?.url || playlist.images[0]?.url"
 						:title="playlist.name"
 					/>
 				</li>
@@ -22,7 +20,7 @@
 
 <script>
 import PlaylistTile from "../atoms/PlaylistTile.vue"
-import { mapState } from "vuex"
+import { mapActions, mapState } from "vuex"
 
 export default {
 	name: "TileGrid",
@@ -48,8 +46,12 @@ export default {
 	},
 	created() {},
 	methods: {
+		...mapActions(["addItemToPlaylist"]),
 		addToPlaylist(index) {
 			console.log(index)
+			let clickedPlaylist = this.NinePlaylists[index]
+			console.log(clickedPlaylist)
+			this.addItemToPlaylist(clickedPlaylist.id)
 		}
 	}
 }

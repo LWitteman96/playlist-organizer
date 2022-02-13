@@ -18,9 +18,7 @@ export default {
 		return {}
 	},
 	computed: {},
-	created() {
-		console.log(this.image)
-	}
+	created() {}
 }
 </script>
 
