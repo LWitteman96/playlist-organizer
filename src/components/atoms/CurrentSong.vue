@@ -3,7 +3,7 @@
 		<img :src="currentSong?.album?.images[0]?.url" class="song-image" />
 		<div class="song-container">
 			<span class="song-title">{{ currentSong?.name }}</span>
-			<span class="song-artist">
+			<span class="song-artist" data-test="song-artist">
 				{{ currentSong?.artists[0].name }}
 			</span>
 		</div>

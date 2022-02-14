@@ -1,13 +1,43 @@
-import { expect } from "chai";
-import { shallowMount } from "@vue/test-utils";
-import HelloWorld from "@/components/HelloWorld.vue";
+import { mount, shallowMount } from "@vue/test-utils"
+import CurrentSong from "../../src/components/atoms/CurrentSong.vue"
 
-describe("HelloWorld.vue", () => {
-  it("renders props.msg when passed", () => {
-    const msg = "new message";
-    const wrapper = shallowMount(HelloWorld, {
-      props: { msg },
-    });
-    expect(wrapper.text()).to.include(msg);
-  });
-});
+test("renders current song", async () => {
+  const $store = {
+    state: {
+      currentSong: {
+        artists: [
+          {
+            name: "Eminem"
+          }
+        ]
+      }
+    },
+    commit: jest.fn()
+  }
+  const wrapper = mount(CurrentSong)
+
+  const songArtist = wrapper.get('[data-test="song-artist"')
+
+  expect(songArtist.text().toBe("Eminem"))
+})
+
+// test("vuex using a mock store", async () => {
+//   const $store = {
+//     state: {
+//       count: 25
+//     },
+//     commit: jest.fn()
+//   }
+
+//   const wrapper = mount(App, {
+//     global: {
+//       mocks: {
+//         $store
+//       }
+//     }
+//   })
+
+//   expect(wrapper.html()).toContain("Count: 25")
+//   await wrapper.find("button").trigger("click")
+//   expect($store.commit).toHaveBeenCalled()
+// })
