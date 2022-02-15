@@ -2,7 +2,9 @@
 	<div class="wrapper">
 		<img :src="currentSong?.album?.images[0]?.url" class="song-image" />
 		<div class="song-container">
-			<span class="song-title">{{ currentSong?.name }}</span>
+			<span class="song-title" data-test="song-title">{{
+				currentSong?.name
+			}}</span>
 			<span class="song-artist">
 				{{ currentSong?.artists[0].name }}
 			</span>

@@ -3,10 +3,7 @@
 		<h1>All Playlists</h1>
 		<div class="scrollable">
 			<ul class="list">
-				<li
-					v-for="(playlist, index) in this.AllPlaylists?.items"
-					:key="index"
-				>
+				<li v-for="(playlist, index) in this.AllPlaylists?.items" :key="index">
 					<ListItem
 						:playlistTitle="playlist.name"
 						@playlistClicked="pin(index)"

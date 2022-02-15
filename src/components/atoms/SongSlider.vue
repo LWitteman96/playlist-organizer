@@ -15,7 +15,6 @@ export default {
 	},
 	watch: {
 		playing: function (oldValue, newValue) {
-			console.log("\n\n\n\n\n\n\n11111does the code get here?")
 			console.log("oldValue", oldValue, "newValue", newValue)
 			this.getPlaybackState()
 		}

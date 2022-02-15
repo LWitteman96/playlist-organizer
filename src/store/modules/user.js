@@ -74,7 +74,7 @@ const mutations = {
 		}
 	},
 	setNinePlaylists: (state) => {
-		; (state.userInfo.NinePlaylists = state.userInfo?.playlists?.items?.slice(
+		;(state.userInfo.NinePlaylists = state.userInfo?.playlists?.items?.slice(
 			0,
 			9
 		))(
