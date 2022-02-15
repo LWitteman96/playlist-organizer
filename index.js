@@ -59,13 +59,13 @@ app.get("/login", function (req, res) {
 
 	res.redirect(
 		"https://accounts.spotify.com/authorize?" +
-		querystring.stringify({
-			response_type: "code",
-			client_id: client_id,
-			scope: scope,
-			redirect_uri: redirect_uri,
-			state: state
-		})
+			querystring.stringify({
+				response_type: "code",
+				client_id: client_id,
+				scope: scope,
+				redirect_uri: redirect_uri,
+				state: state
+			})
 	)
 })
 
@@ -80,9 +80,9 @@ app.get("/callback", function (req, res) {
 	if (state === null || state !== storedState) {
 		res.redirect(
 			"/#" +
-			querystring.stringify({
-				error: "state_mismatch"
-			})
+				querystring.stringify({
+					error: "state_mismatch"
+				})
 		)
 	}
 	res.clearCookie(stateKey)
@@ -107,9 +107,9 @@ app.get("/callback", function (req, res) {
 			console.error("request has failed. No authorization token was fetched.")
 			res.redirect(
 				"?" +
-				querystring.stringify({
-					error: "invalid_token"
-				})
+					querystring.stringify({
+						error: "invalid_token"
+					})
 			)
 		}
 		var access_token = body.access_token,
@@ -128,19 +128,19 @@ app.get("/callback", function (req, res) {
 			if (process.env.NODE_ENV == "development") {
 				res.redirect(
 					"http://localhost:8080/success?" +
-					querystring.stringify({
-						access_token: access_token,
-						refresh_token: refresh_token,
-						id: id
-					})
+						querystring.stringify({
+							access_token: access_token,
+							refresh_token: refresh_token,
+							id: id
+						})
 				)
 			} else {
 				res.redirect(
 					"/success?" +
-					querystring.stringify({
-						access_token: access_token,
-						refresh_token: refresh_token
-					})
+						querystring.stringify({
+							access_token: access_token,
+							refresh_token: refresh_token
+						})
 				)
 			}
 		})
